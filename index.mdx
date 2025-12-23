@@ -1,14 +1,37 @@
 ---
-title: "Introduction"
-description: "Welcome in the MemoryModel introduction."
+mode: "wide"
 ---
 
-# Introduction & Platform Overview
+<img
+  src="/images/logo.png"
+  alt="Logo"
+  title="Logo"
+  className="mx-auto"
+  style={{ width:"33%" }}
+/>
 
-## High-Level Definition
+<Columns cols={2}>
+  <Card title="How It Works" icon="gear" color="#b26eff" href="https://docs.memorymodel.dev/core-concepts/how-it-works">
+    Want to discover (almost) all our secrets? Read here.
+  </Card>
+  <Card title="Benchmarks" icon="chart-bar" color="#b26eff" href="https://docs.memorymodel.dev/benchmarks">
+    The competition is fierce, but we are ready.
+  </Card>
+</Columns>
 
-**Memory Model** is a fully managed **Adaptive Intelligence Platform** designed to solve context retention for LLM applications.\
-Unlike static vector databases that rely solely on similarity search, Memory Model operates as an active orchestration middleware. It combines a **Schema-Agnostic Storage Engine** with an **Adaptive Retrieval System** that autonomously manages data ingestion strategies, query routing, and parameter self-optimization.
+<Columns cols={2}>
+  <Card title="Quickstart" icon="rocket-launch" color="#b26eff" href="https://docs.memorymodel.dev/quickstart">
+    Start with MemoryModel in guided steps.
+  </Card>
+  <Card title="Examples" icon="lightbulb-cfl-on" color="#b26eff" href="https://docs.memorymodel.dev/examples/agent-integration-examples">
+    If you want examples of usage.
+  </Card>
+</Columns>
+
+/\
+\
+Memory Model is a fully managed Adaptive Intelligence Platform designed to solve context retention for LLM applications.\
+Unlike static vector databases that rely solely on similarity search, Memory Model operates as an active orchestration middleware. It combines a Schema-Agnostic Storage Engine with an Adaptive Retrieval System that autonomously manages data ingestion strategies, query routing, and parameter self-optimization.
 
 ## Data Strategy & Ingestion
 
@@ -41,31 +64,9 @@ The core differentiator is the **Adaptive Retrieval System**. The platform aban
    - **META Mode:** Broad, exploratory search (High-k).
    - **SPECIFIC Mode:** Narrow, precision-focused search (Low-k).
 
-****_Outputs from these strategies are aggregated via a Fusion Layer responsible for deduplication and final ranking._****
+**_Outputs from these strategies are aggregated via a Fusion Layer responsible for deduplication and final ranking._**
 
 ## Continuous Optimization
 
 The platform replaces manual configuration with **Closed-Loop Optimization**.\
 Background processes, governed by **Control Theory principles**, continuously analyze retrieval telemetry (Precision/Recall). The system automatically adjusts similarity thresholds and ranking weights to adapt to evolving user patterns without human intervention.
-
-<Card title="Start here" icon="rocket" horizontal href="/quickstart">
-  Follow our three step quickstart guide.
-</Card>
-
-<Columns cols={2}>
-  <Card title="How It Works" icon="gear" color="#b26eff" href="https://docs.memorymodel.dev/core-concepts/how-it-works">
-    Want to discover (almost) all our secrets? Read here.
-  </Card>
-  <Card title="Benchmarks" icon="chart-bar" color="#b26eff" href="https://docs.memorymodel.dev/benchmarks">
-    The competition is fierce, but we are ready.
-  </Card>
-</Columns>
-
-<Columns cols={2}>
-  <Card title="Quickstart" icon="rocket-launch" color="#b26eff" href="https://docs.memorymodel.dev/quickstart">
-    Start with MemoryModel in guided steps.
-  </Card>
-  <Card title="Examples" icon="lightbulb-cfl-on" color="#b26eff" href="https://docs.memorymodel.dev/examples/agent-integration-examples">
-    If you want examples of usage.
-  </Card>
-</Columns>
