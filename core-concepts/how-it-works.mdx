@@ -1,0 +1,18 @@
+---
+title: "How It Works"
+description: "Operational pipeline of MemoryModel"
+---
+
+<Frame>
+  <img src="/images/diagrams/how_it_works.webp" alt="Architecture diagram" style={{ borderRadius: '0.5rem', width: '100%', backgroundColor: '#ffffff', padding: '0.5rem' }} />
+</Frame>
+
+### Key Architectural Principles
+
+MemoryModel’s architecture follows these principles:
+
+- Separation of concerns: Clear boundaries between ingestion, retrieval, and optimization
+- Distributed processing: Asynchronous queues absorb high-volume ingestion without blocking pipelines
+- Dual-write consistency: Keep metadata and vector stores in sync for reliable retrieval
+- Horizontal scalability: Stateless API layer enables automatic scaling across nodes
+

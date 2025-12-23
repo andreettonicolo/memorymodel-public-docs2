@@ -1,0 +1,59 @@
+---
+title: "Get Memories"
+description: "List all memories in a cluster with optional filters"
+---
+
+### Overview
+
+Get a paginated list of memories stored in a cluster. Use optional filters such as memory type and limits to control results.
+
+### Endpoint
+
+`GET /v1/memory`
+
+### Query parameters
+
+| Param | Type | Status | Description |
+| --- | --- | --- | --- |
+| `limit` | Number | OPTIONAL | Default: `50`. |
+| `memoryType` | String | OPTIONAL | Filter by specific memory type. |
+
+### cURL example
+
+<CodeGroup>
+```bash cURL
+curl -X GET "https://api.memorymodel.dev/v1/memory?limit=10" \
+  -H "x-memory-cluster-access-key: sk_live_..."
+```
+
+```typescript TypeScript
+// npm install @memorymodel/client
+import { MemoryClient } from '@memorymodel/client';
+
+const client = new MemoryClient({
+  apiKey: "sk_live_...",
+  defaultEndUserId: "user_123"
+});
+
+const memories = await client.list({
+  limit: 10
+});
+```
+
+```python Python
+# pip install memory-model
+from memorymodel import MemoryClient
+
+client = MemoryClient(
+    api_key="sk_live_...",
+    default_end_user_id="user_123"
+)
+
+memories = client.list(limit=10)
+```
+</CodeGroup>
+
+<Note>
+  Authentication is required. Requests without valid credentials will fail. Ensure your cluster access key has permission to list memories.
+</Note>
+

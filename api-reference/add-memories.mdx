@@ -1,0 +1,38 @@
+---
+title: "Add Memories"
+description: "Create new memories via API"
+---
+
+## Add Memories
+
+Create a memory by sending structured content.
+
+**cURL**
+
+```bash
+curl -X POST "https://api.memorymodel.dev/v1/memories" \
+  -H "Authorization: Bearer $MEMORYMODEL_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Invoice Acme Inc",
+    "content": "Invoice #4421 dated 2024-03-05",
+    "tags": ["invoice","acme","2024"]
+  }'
+```
+
+**JavaScript**
+
+```javascript
+await fetch("https://api.memorymodel.dev/v1/memories", {
+  method: "POST",
+  headers: {
+    "Authorization": `Bearer ${process.env.MEMORYMODEL_API_KEY}`,
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    title: "Invoice Acme Inc",
+    content: "Invoice #4421 dated 2024-03-05",
+    tags: ["invoice","acme","2024"]
+  })
+})
+```

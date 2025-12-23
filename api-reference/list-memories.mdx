@@ -1,0 +1,23 @@
+---
+title: "List Memories"
+description: "List memories in a cluster"
+---
+
+## List Memories
+
+Return a paginated list of memories.
+
+**cURL**
+
+```bash
+curl -X GET "https://api.memorymodel.dev/v1/memories?limit=50&cursor=abc" \
+  -H "Authorization: Bearer $MEMORYMODEL_API_KEY"
+```
+
+**JavaScript**
+
+```javascript
+await fetch("https://api.memorymodel.dev/v1/memories?limit=50", {
+  headers: { "Authorization": `Bearer ${process.env.MEMORYMODEL_API_KEY}` }
+})
+```

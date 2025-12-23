@@ -1,0 +1,44 @@
+---
+title: "Search Memories"
+description: "Retrieve memories using factual, conceptual, or hybrid strategies"
+---
+
+## Search Memories
+
+Search with the strategy that matches intent.
+
+**cURL (factual)**
+
+```bash
+curl -X POST "https://api.memorymodel.dev/v1/memories/search" \
+  -H "Authorization: Bearer $MEMORYMODEL_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "mode": "factual",
+    "query": "Acme Inc invoice on 2024-03-05"
+  }'
+```
+
+**cURL (conceptual)**
+
+```bash
+curl -X POST "https://api.memorymodel.dev/v1/memories/search" \
+  -H "Authorization: Bearer $MEMORYMODEL_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "mode": "conceptual",
+    "query": "best practices for onboarding"
+  }'
+```
+
+**cURL (hybrid)**
+
+```bash
+curl -X POST "https://api.memorymodel.dev/v1/memories/search" \
+  -H "Authorization: Bearer $MEMORYMODEL_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "mode": "hybrid",
+    "query": "customer issues in Q3 with sentiment"
+  }'
+```

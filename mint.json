@@ -1,0 +1,52 @@
+{
+  "name": "MemoryModel documentation",
+  "dashboard": "https://app.memorymodel.dev",
+  "logo": {
+    "light": "/logo/logo.svg",
+    "dark": "/logo/logo.svg"
+  },
+  "colors": {
+    "primary": "#a855f7",
+    "light": "#C084FC",
+    "dark": "#6D28D9"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "icon": "rocket",
+      "pages": [
+        "index",
+        "quickstart"
+      ]
+    },
+    {
+      "group": "Comparisons",
+      "icon": "vial",
+      "pages": [
+        "memorymodel-vs-rag",
+        "benchmarks"
+      ]
+    },
+    {
+      "group": "Core Concepts",
+      "icon": "brain",
+      "pages": [
+        "core-concepts/how-it-works",
+        "core-concepts/add-memory",
+        "core-concepts/search-memory",
+        "core-concepts/get-memory",
+        "core-concepts/export-data",
+        "core-concepts/update-memory",
+        "core-concepts/delete-memory"
+      ]
+    },
+    {
+      "group": "Development",
+      "icon": "terminal",
+      "pages": [
+        "examples/agent-integration-examples"
+      ]
+    }
+  ]
+}

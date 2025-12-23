@@ -1,0 +1,29 @@
+---
+title: "Export Data"
+description: "Download all memories in a cluster as a JSON backup"
+---
+
+### Overview
+
+Export the cluster’s memories to a JSON file for backup or migration.
+
+### Endpoint
+
+`GET /v1/export`
+
+### Query parameters
+
+None.
+
+### cURL example
+
+```bash
+curl -X GET "https://api.memorymodel.dev/v1/export"  \
+  -H "x-memory-cluster-access-key: sk_live_..." \
+  --output project_backup.json
+```
+
+<Note>
+  This downloads a JSON file containing all memories for the cluster. Ensure your access key has permission to export data.
+</Note>
+

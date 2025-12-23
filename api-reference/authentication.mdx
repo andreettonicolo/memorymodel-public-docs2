@@ -1,0 +1,33 @@
+---
+title: "Authentication"
+description: "Authenticate API requests with Bearer tokens"
+---
+
+## Authentication
+
+Use Bearer tokens in the `Authorization` header.
+
+**cURL**
+
+```bash
+curl -X GET "https://api.memorymodel.dev/v1/health" \
+  -H "Authorization: Bearer $MEMORYMODEL_API_KEY"
+```
+
+**JavaScript**
+
+```javascript
+await fetch("https://api.memorymodel.dev/v1/health", {
+  headers: { Authorization: `Bearer ${process.env.MEMORYMODEL_API_KEY}` }
+})
+```
+
+**Python**
+
+```python
+import os, requests
+requests.get(
+  "https://api.memorymodel.dev/v1/health",
+  headers={"Authorization": f"Bearer {os.getenv('MEMORYMODEL_API_KEY')}"}
+)
+```

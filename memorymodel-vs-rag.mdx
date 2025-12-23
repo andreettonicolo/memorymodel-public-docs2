@@ -1,0 +1,45 @@
+---
+title: "MemoryModel vs RAG"
+description: 'Comparison between MemoryModel and Retrieval-Augmented Generation'
+---
+
+RAG solves search, not reasoning. Using raw vector DBs like Qdrant/Pinecone scales storage, not intelligence. Without a memory architecture, enterprises drift into the "data swamp".
+
+### Technical limitations of RAG
+
+**Unstructured**
+
+Standard RAG is flat and does not model explicit structure: it lacks entity relations, logical constraints, and temporal sequences. Selection by semantic proximity (nearest neighbors) is not a substitute for a knowledge graph and does not support multi-hop queries or constraint-based reasoning.
+
+**Noise**
+
+As data volumes grow, the embedding space becomes denser and separation between semantic classes decreases. With a fixed k, false positives increase: near but irrelevant documents overshadow genuinely relevant ones.
+
+**Maintenance**
+
+Manual re-ranking, drift detection, and index pruning require continuous cycles of re-embedding and index rebuilds. Updates to embedding models or the corpus introduce drift, forcing recalibration and trade-offs between latency and quality.
+
+**"Lost in the middle" phenomenon.**
+
+In LLMs, tokens in the middle of the context window receive less attention compared to the beginning and end. Even with correct retrieval, critical information in the middle can be attenuated or ignored.
+
+**Inefficiency grows with data.**
+
+ANNs reduce complexity, but latency and memory usage increase with corpus size. Manual filters and post-processing (deduplication, reranking, aggregations) amplify operational costs.
+
+**Not scalable for production agents.**
+
+Agents require deterministic retrieval, episodic continuity, and strategy adaptation based on intent. Flat RAG lacks memory orchestration and cannot guarantee consistency as data and flows grow.
+
+### Memory Model
+
+To learn how MemoryModel addresses these limitations:
+
+<CardGroup cols={2}>
+  <Card title="How It Works" icon="rocket" href="/core-concepts/how-it-works">
+    End‑to‑end operational overview.
+  </Card>
+  <Card title="Core Concepts" icon="brain" href="/core-concepts/add-memory">
+    Add/Search/Update/Delete Memory (placeholders).
+  </Card>
+</CardGroup>

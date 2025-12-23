@@ -1,0 +1,158 @@
+---
+title: "Add Memory"
+description: "Add new memories to the cluster"
+---
+### Memory Ingestion
+
+<Frame>
+  <img src="/images/diagrams/memory_ingestion.webp" alt="Memory ingestion pipeline" style={{ borderRadius: '0.5rem', width: '100%', backgroundColor: '#ffffff', padding: '0.5rem' }} />
+</Frame>
+
+#### Innovation: Multi-Stage Semantic Enrichment
+
+Traditional systems embed raw text directly. MemoryModel applies bidirectional semantic expansion:
+
+- For memories: Enriches content with implicit semantics (e.g., "Blade Runner" → genre, themes, related concepts)
+- For queries: Expands with synonyms and related terms (e.g., "AI" → related terminology)
+- Adaptive mode detection: System automatically determines which enrichment strategy to apply
+
+#### Technical Approach
+
+- LLM-powered context injection before embedding
+- Heuristic-based query vs memory detection
+- Maintains semantic coherence while improving recall
+
+#### Business Impact
+
+- 40–60% improvement in retrieval relevance
+- Eliminates terminology mismatch (user says "AI", system finds "machine learning")
+
+### Ingest into the cluster
+
+#### Text ingest (API)
+
+#### Payload schema (text)
+
+| Field | Type | Status | Description |
+| --- | --- | --- | --- |
+| `source.type` | String | REQUIRED | Must be `text`. |
+| `source.content` | String | REQUIRED | The text to ingest as a memory. |
+| `userContext` | String | OPTIONAL | Additional context used for enrichment and retrieval. |
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://api.memorymodel.dev/v1/ingest" \
+  -H "Content-Type: application/json" \
+  -H "x-memory-cluster-access-key: sk_live_..." \
+  -H "x-end-user-id: user_123" \
+  -d '{
+    "source": {
+      "type": "text",
+      "content": "The project deadline has been moved to next Friday."
+    },
+    "userContext": "Slack message from Project Manager"
+  }'
+```
+
+```typescript TypeScript
+// npm install @memorymodel/client
+import { MemoryClient } from '@memorymodel/client';
+
+const client = new MemoryClient({
+  apiKey: "sk_live_...",
+  defaultEndUserId: "user_123"
+});
+
+await client.add("The project deadline has been moved to next Friday.", {
+  userContext: "Slack message from Project Manager"
+});
+```
+
+```python Python
+# pip install memory-model
+from memorymodel import MemoryClient
+
+client = MemoryClient(
+    api_key="sk_live_...",
+    default_end_user_id="user_123"
+)
+
+response = client.add("The project deadline has been moved to next Friday.", user_context="Slack message from Project Manager")
+print(response.job_id)
+```
+</CodeGroup>
+
+<Tip>
+  Include `x-end-user-id` to track the end-user identity. This header is required in multi‑user setups; if your cluster is single‑user, you can use a simple identifier like `user_123`.
+</Tip>
+
+**Response (text)**
+
+```json
+{
+  "status": "Accepted",
+  "jobId": "job_1700000000000_user_123"
+}
+```
+
+#### Image ingest (API)
+
+#### Payload schema (image)
+
+| Field | Type | Status | Description |
+| --- | --- | --- | --- |
+| `imageData` | String | REQUIRED | Base64-encoded image string (data URI prefix optional). |
+| `userContext` | String | OPTIONAL | Additional context used for enrichment and retrieval. |
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://api.memorymodel.dev/v1/ingest/image"  \
+  -H "Content-Type: application/json" \
+  -H "x-memory-cluster-access-key: sk_live_..." \
+  -H "x-end-user-id: user_123" \
+  -d '{
+    "imageData": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+    "userContext": "Screenshot of the error message"
+  }'
+```
+
+```typescript TypeScript
+// npm install @memorymodel/client
+await client.addImage("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=", {
+  userContext: "Screenshot of the error message"
+});
+```
+
+```python Python
+# pip install memory-model
+import base64
+from memorymodel import MemoryClient
+
+# client = MemoryClient(...)
+
+# Assuming you have the image file
+# with open("screenshot.png", "rb") as f:
+#     img_b64 = base64.b64encode(f.read()).decode()
+
+img_b64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+response = client.add_image(img_b64, user_context="Screenshot of the error message")
+```
+</CodeGroup>
+
+<Note>
+  For large images, ensure your client supports large payloads. The `imageData` field must be a valid Base64 string (with or without the data URI prefix).
+</Note>
+
+**Response (image)**
+
+```json
+{
+  "status": "Accepted",
+  "jobId": "img_job_1700000000000_user_123",
+  "previewUrl": "https://storage.googleapis.com/..."
+}
+```
+
+<Warning>
+  The `previewUrl` must point to a valid storage bucket and object. Invalid bucket names will return an error from the storage provider.
+</Warning>

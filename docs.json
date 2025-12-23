@@ -1,0 +1,89 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Mint Starter Kit",
+  "colors": {
+    "primary": "#a855f7",
+    "light": "#C084FC",
+    "dark": "#6D28D9"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guides",
+        "groups": [
+      {
+        "group": "Getting started",
+        "pages": [
+          "index",
+          "quickstart"
+        ]
+      },
+      {
+        "group": "Comparisons",
+        "pages": [
+          "memorymodel-vs-rag",
+          "benchmarks"
+        ]
+      },
+      {
+        "group": "Core concepts",
+        "pages": [
+          "core-concepts/how-it-works",
+          "core-concepts/add-memory",
+          "core-concepts/search-memory",
+          "core-concepts/get-memory",
+          "core-concepts/export-data",
+          "core-concepts/update-memory",
+          "core-concepts/delete-memory"
+        ]
+      },
+      {
+        "group": "Examples",
+        "pages": [
+          "examples/agent-integration-examples"
+        ]
+      }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": []
+    }
+  },
+  "logo": {
+    "light": "/logo/logo.svg",
+    "dark": "/logo/logo.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:founders@memorymodel.dev"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://app.memorymodel.dev"
+    }
+  },
+  "contextual": {
+    "options": [
+     "copy",
+     "view",
+     "chatgpt",
+     "claude",
+     "perplexity",
+     "mcp",
+     "cursor",
+     "vscode"
+   ]
+  },
+  "footer": {
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/memorymodel"
+    }
+  }
+}

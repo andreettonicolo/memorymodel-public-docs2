@@ -1,0 +1,150 @@
+---
+title: "Quickstart"
+description: "Start with MemoryModel in guided steps"
+---
+
+The big advantage of Memory Model isn’t just the architecture’s scalability and retrieval accuracy—it’s how deeply you can customize it.
+
+In this quick start you will:
+
+- Create a workspace cluster
+- Define the memory nodes you need
+- Insert data into your cluster
+- Retrieve data with factual, conceptual, and hybrid strategies
+- Plan customization for your use case
+
+<Steps>
+<Step title="Contact the Sales Team">
+Reach out to our team to get started and access onboarding.
+
+<a href="https://memorymodel.dev/#contact">https://memorymodel.dev/#contact</a>
+</Step>
+
+<Step title="Log in to the Dashboard">
+Go to <a href="https://app.memorymodel.dev">app.memorymodel.dev</a> and sign in using the credentials sent via email by the <code>memorymodel.dev</code> team.
+
+<Frame>
+  <img src="/images/dashboard/login.png" alt="Memory Model login screen" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+</Step>
+
+<Step title="Initialize Your First Workspace">
+From the dashboard, create your first workspace.
+
+1. Click "Initialize Workspace".
+2. Enter a clear workspace name.
+3. Keep the auto-assigned secure namespace (Vector Collection ID) or set a custom ID.
+4. Click "Initialize".
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+  <Frame>
+    <img src="/images/dashboard/initialize_workspace.png" alt="Dashboard with Initialize Workspace card" style={{ borderRadius: '0.5rem', width: '100%' }} />
+  </Frame>
+  <Frame>
+    <img src="/images/dashboard/initialize_workspace_1.png" alt="Initialize System modal with Workspace Designation and Vector Collection ID" style={{ borderRadius: '0.5rem', width: '100%' }} />
+  </Frame>
+</div>
+</Step>
+
+<Step title="Enter the Workspace">
+Open the newly created workspace from the Workspaces panel.
+
+<Frame>
+  <img src="/images/dashboard/select_workspace.png" alt="Workspaces list showing the active workspace" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+</Step>
+
+<Step title="Create a Cluster in Your Workspace">
+Inside a workspace, you’ll find the memory cluster list on the left (and reflected in the graph). Create a new cluster by clicking "Create Cluster".
+
+1. Click "Create Cluster" in the top-right.
+2. Enter a clear designation and description.
+3. Click "Deploy" to create the cluster.
+
+A cluster is designed to contain all the memories relevant to a specific agent. Treat a cluster as the agent’s memory boundary: group data that the agent should read, write, and retrieve during its tasks.
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+  <Frame>
+    <img src="/images/dashboard/cluster_list.png" alt="Workspace view showing cluster list and Create Cluster button" style={{ borderRadius: '0.5rem', width: '100%' }} />
+  </Frame>
+  <Frame>
+    <img src="/images/dashboard/new_cluster.png" alt="Create a new cluster modal with designation and description" style={{ borderRadius: '0.5rem', width: '100%' }} />
+  </Frame>
+</div>
+
+</Step>
+
+<Step title="Open the Cluster and Deploy a Node">
+Select the desired cluster to view its current architecture and the nodes that collect memories for your agent. From here, you can create a new node by clicking "Deploy Node".
+
+1. Open the target cluster from the left sidebar.
+2. Review the graph topology and active nodes.
+3. Click "Deploy Node" to add a new memory node for your agent.
+ 
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+  <Frame>
+    <img src="/images/dashboard/into_cluster.png" alt="Cluster topology view showing active nodes and Deploy Node button" style={{ borderRadius: '0.5rem', width: '100%' }} />
+  </Frame>
+  <Frame>
+    <img src="/images/dashboard/new_node_ai_configuration.png" alt="Deploy Node configuration modal for creating a new memory node" style={{ borderRadius: '0.5rem', width: '100%' }} />
+  </Frame>
+</div>
+</Step>
+
+<Step title="Define the Memory Nodes You Need">
+Add the memory nodes that best fit your data and retrieval goals. Nodes structure information and make it available to the right strategy when you query.
+
+<picture>
+  <source srcSet="/images/dashboard/new_configuration.png" type="image/png" />
+  <img src="/images/dashboard/new_configuration_1.png" alt="Node Configuration with ID, name, memory type, model, temperature and embedding template" style={{ borderRadius: '0.5rem', width: '100%' }} />
+</picture>
+
+- In the Model ID, provide three values: provider, model family, and version (for example, `gemini-2.5-flash`).
+- In the Embedding Template, add one realistic example sentence that the node will embed (for example, `My primary care physician advised me to take acetaminophen for my headache.`).
+</Step>
+ 
+<Step title="Create API Key">
+Generate and secure an API key for programmatic access.
+
+1. Go to `Dashboard → API Keys` and click "Generate Key".
+2. Enter a meaningful alias to track usage.
+3. Copy the secret key immediately and store it securely.
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+  <Frame>
+    <img src="/images/dashboard/create_apik.png" alt="API Keys page showing Generate Key and integration guidance" style={{ borderRadius: '0.5rem', width: '100%' }} />
+  </Frame>
+  <Frame>
+    <img src="/images/dashboard/create_apik2.png" alt="Generate Credentials modal to set key alias" style={{ borderRadius: '0.5rem', width: '100%' }} />
+  </Frame>
+  <div style={{ gridColumn: '1 / -1' }}>
+    <Frame>
+      <img src="/images/dashboard/create_apik3.png" alt="Key Generated screen showing secret key and security warning" style={{ borderRadius: '0.5rem', width: '100%' }} />
+    </Frame>
+  </div>
+</div>
+
+- The secret key is displayed only once and won’t be visible again anywhere.
+- Copy it immediately and store it securely (env var, secret manager, or vault).
+- If it’s lost, revoke the credential and generate a new one.
+- Use it in requests via `Authorization: Bearer <YOUR_API_KEY>`.
+</Step>
+
+
+
+<Step title="Insert Data into Your Cluster">
+Insert your first items into the cluster using your preferred ingestion path.
+
+Examples: CSV import, API calls from your backend, or streaming logs.
+</Step>
+
+<Step title="Next: Add or Search Memories">
+Choose your next action.
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '0.5rem' }}>
+  <a href="/core-concepts/add-memory" style={{ display: 'inline-block', padding: '0.75rem 1rem', borderRadius: '0.5rem', background: '#a855f7', color: '#ffffff', textAlign: 'center', fontWeight: 600 }}>Add Memory</a>
+  <a href="/core-concepts/search-memory" style={{ display: 'inline-block', padding: '0.75rem 1rem', borderRadius: '0.5rem', background: '#a855f7', color: '#ffffff', textAlign: 'center', fontWeight: 600 }}>Search Memory</a>
+</div>
+</Step>
+
+</Steps>

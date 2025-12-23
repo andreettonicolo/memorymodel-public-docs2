@@ -1,0 +1,135 @@
+---
+title: "Search Memory"
+description: "How MemoryModel retrieves memories: modes, intent, ranking"
+---
+
+### Overview
+
+Search Memory selects the most relevant memories for the request’s intent. It is robust across heterogeneous data thanks to a pipeline designed to balance precision and coverage.
+
+- Key inputs: `mode` (factual, conceptual, hybrid), `query`, `cluster` context
+- Goal: maximize relevance and explainability with predictable latency
+- Output: ordered list of memories with scores and helpful metadata
+
+### Pipeline (first steps)
+
+1. Query normalization: cleaning, tokenization, language detection
+2. Bidirectional semantic enrichment:
+   - For the query: expand with synonyms, related terms, intent signals
+   - For memories: enrich content with implicit concepts useful for matching
+3. Embedding and matching: compute vectors and perform similarity search on optimized indexes
+4. Combined ranking: fuse scores (similarity, freshness, authority, usage signals)
+5. Post‑processing: deduplication, diversification, filters (cluster, tags, time)
+
+This first phase (normalization + enrichment) is key to avoiding search failures on different expressions of the same concept and to surfacing useful results even when the query is incomplete or ambiguous.
+
+### Search modes
+
+- Factual: prioritizes precise matches; ideal for IDs, dates, exact names
+- Conceptual: prioritizes concepts and themes; great for “best practices”, “ideas”, “trends”
+- Hybrid: blends factual and conceptual with adaptive weights; recommended default for general queries
+
+### Scoring and ranking
+
+- Vector similarity: semantic proximity between query and memory
+- Contextual boosting: freshness, source authority, usage signals, tags
+- Penalties: duplicates, weak content, low coherence
+- Explainability: reasons for the match available for UI and logging
+
+### Common filters
+
+- By cluster or workspace
+- By tags (e.g., `invoice`, `policy`)
+- By time window (e.g., last 90 days)
+
+### Intent examples and modes
+
+- "Acme invoice dated 2024‑03‑05" → `factual`
+- "Onboarding guidelines" → `conceptual`
+- "Customer issues in Q3 with sentiment" → `hybrid`
+
+### Related API
+
+For request and response examples, see `API: Search Memories` at `/api-reference/search-memories`.
+
+### Resonate (Search)
+
+#### Payload schema
+
+| Field | Type | Status | Description |
+| --- | --- | --- | --- |
+| `query` | String | REQUIRED | The semantic search query. |
+| `useDynamicScoring` | Boolean | OPTIONAL | Default: `true`. Enables AI re-ranking. |
+| `strategy` | String | OPTIONAL | Options: `simpleVectorSearch`, `directLookupStrategy`, `centroidAwareness`, `entityAnchorStrategy`. |
+| `options.limit` | Number | OPTIONAL | Default: `5`. Max memories to return. |
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://api.memorymodel.dev/v1/search"  \
+  -H "Content-Type: application/json" \
+  -H "x-memory-cluster-access-key: sk_live_..." \
+  -H "x-end-user-id: user_123" \
+  -d '{
+    "query": "What is the new deadline?",
+    "useDynamicScoring": true,
+    "options": {
+      "limit": 3
+    }
+  }'
+```
+
+```typescript TypeScript
+// npm install @memorymodel/client
+import { MemoryClient } from '@memorymodel/client';
+
+const client = new MemoryClient({
+  apiKey: "sk_live_...",
+  defaultEndUserId: "user_123"
+});
+
+const results = await client.search("What is the new deadline?", {
+  limit: 3,
+  strategy: "centroid_aware"
+});
+```
+
+```python Python
+# pip install memory-model
+from memorymodel import MemoryClient
+
+client = MemoryClient(
+    api_key="sk_live_...",
+    default_end_user_id="user_123"
+)
+
+results = client.search("What is the new deadline?", limit=3, strategy="centroidAwareness")
+```
+</CodeGroup>
+
+<Tip>
+  Include `x-end-user-id` only if the cluster is configured for multi‑user ingestion. If not, use a simple identifier like `user_123`.
+</Tip>
+
+**Response**
+
+```json
+{
+  "data": [
+    {
+      "id": "mem_abc123",
+      "finalScore": 0.92,
+      "payload": {
+        "memory_type": "movie_preference",
+        "content": "I love sci-fi movies like Blade Runner.",
+        "movie_genre": "sci-fi",
+        "sentiment": "positive",
+        "mentioned_titles": ["Blade Runner"],
+        "user_id": "user_123",
+        "created_at": 1700000000000
+      },
+      "searchedWithNode": "node_preferences_01"
+    }
+  ]
+}
+```
+
