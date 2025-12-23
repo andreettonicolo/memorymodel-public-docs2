@@ -16,7 +16,7 @@
       "group": "Getting Started",
       "icon": "rocket",
       "pages": [
-        "index",
+        "introduction",
         "quickstart"
       ]
     },
