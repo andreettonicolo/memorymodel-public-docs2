@@ -1,67 +1,74 @@
 ---
 title: "Search Memory"
-description: "How MemoryModel retrieves memories: modes, intent, ranking"
+description: "Retrieve memories using the Adaptive Retrieval Engine."
 ---
 
 ### Overview
 
-Search Memory selects the most relevant memories for the request’s intent. It is robust across heterogeneous data thanks to a pipeline designed to balance precision and coverage.
+Unlike standard vector search which applies a single logic to all queries, **Search Memory** utilizes an **Intent-Based Routing** architecture.\
+Incoming queries are analyzed to detect specific signals (Temporal, Entity-based, or Semantic) and are routed to the execution strategy that yields the highest relevance.
 
-- Key inputs: `mode` (factual, conceptual, hybrid), `query`, `cluster` context
-- Goal: maximize relevance and explainability with predictable latency
-- Output: ordered list of memories with scores and helpful metadata
+## Retrieval Architecture
 
-### Pipeline (first steps)
+<img
+  src="/images/Untitleddiagram-2025-12-23-115746.png"
+  alt="Untitled Diagram 2025 12 23 115746"
+  title="Untitled Diagram 2025 12 23 115746"
+  style={{ width:"62%" }}
+/>
 
-1. Query normalization: cleaning, tokenization, language detection
-2. Bidirectional semantic enrichment:
-   - For the query: expand with synonyms, related terms, intent signals
-   - For memories: enrich content with implicit concepts useful for matching
-3. Embedding and matching: compute vectors and perform similarity search on optimized indexes
-4. Combined ranking: fuse scores (similarity, freshness, authority, usage signals)
-5. Post‑processing: deduplication, diversification, filters (cluster, tags, time)
+## 1. Default Behavior (Automatic Intent Detection)
 
-This first phase (normalization + enrichment) is key to avoiding search failures on different expressions of the same concept and to surfacing useful results even when the query is incomplete or ambiguous.
+1. **Recommended for 90% of use cases.**\
+   When the strategy parameter is omitted in the API request, the system activates the **Intent Detection Layer**.
 
-### Search modes
+   Instead of forcing a single path, the system evaluates the query against multiple models to orchestrate the retrieval:
+   1. **Route Selection:** Determines if the query requires Entity Anchors (graph traversal), Temporal Filtering (date ranges), or Vector Search.
+   2. **Parallel Execution:** May execute multiple strategies simultaneously for complex queries (e.g., "Emails from Matteo [Entity] last week [Temporal]").
+   3. **Result Fusion:** The outputs are aggregated in the **Fusion Layer**, where deduplication occurs and scores are normalized based on the active strategies.
 
-- Factual: prioritizes precise matches; ideal for IDs, dates, exact names
-- Conceptual: prioritizes concepts and themes; great for “best practices”, “ideas”, “trends”
-- Hybrid: blends factual and conceptual with adaptive weights; recommended default for general queries
+## 2. Manual Strategy Overrides
 
-### Scoring and ranking
+Advanced users can bypass Intent Detection and force a specific execution path using the strategy parameter.
 
-- Vector similarity: semantic proximity between query and memory
-- Contextual boosting: freshness, source authority, usage signals, tags
-- Penalties: duplicates, weak content, low coherence
-- Explainability: reasons for the match available for UI and logging
+### Adaptive Vector Strategy (centroidAwareness)
 
-### Common filters
+- **Architectural Role:** Corresponds to the **Semantic Strategy**.
+- **Behavior:** Activates **Centroid Analysis**. The system measures the distance between the query and the user's semantic centroid to automatically decide between:
+  - **META Mode:** Broad, exploratory search (High-k).
+  - **SPECIFIC Mode:** Narrow, precision search (Low-k).
+- **Best for:** Abstract concepts, themes, or when you specifically want to leverage the user's interest profile.
 
-- By cluster or workspace
-- By tags (e.g., `invoice`, `policy`)
-- By time window (e.g., last 90 days)
+### Entity Anchor Strategy (entityAnchorStrategy)
 
-### Intent examples and modes
+- **Architectural Role:** Corresponds to the **Entity-Based Strategy**.
+- **Behavior:** Traverses the **Virtual Knowledge Graph**. It locks onto specific nodes (People, Places, Organizations) and retrieves connected memories regardless of semantic vector similarity.
+- **Best for:** Queries focused on specific subjects where "hallucination" or fuzzy matching is unacceptable.
 
-- "Acme invoice dated 2024‑03‑05" → `factual`
-- "Onboarding guidelines" → `conceptual`
-- "Customer issues in Q3 with sentiment" → `hybrid`
+### Temporal Range Strategy (temporalRangeStrategy)
 
-### Related API
+- **Architectural Role:** Corresponds to the **Temporal Strategy**.
+- **Behavior:** Converts the query into deterministic date-range filters. It leverages the **Shift-Left** timestamps (resolved at ingestion) to perform strict chronological filtering, bypassing semantic similarity.
+- **Best for:** Queries strictly bound by time (e.g., "History from last Q3", "Updates from yesterday") where chronological precision is the primary intent.
 
-For request and response examples, see `API: Search Memories` at `/api-reference/search-memories`.
+### Direct Match Strategy (directLookupStrategy)
 
-### Resonate (Search)
+- **Architectural Role:** Corresponds to the **Direct Match Strategy**.
+- **Behavior:** Executes an O(1) lookup bypassing the embedding engine.
+- **Best for:** Retrieving by known IDs or exact codes.
+
+## Resonate (Search)
+
+Execute a search query against the memory cluster.
 
 #### Payload schema
 
-| Field               | Type    | Status   | Description                                                                                         |
-| ------------------- | ------- | -------- | --------------------------------------------------------------------------------------------------- |
-| `query`             | String  | REQUIRED | The semantic search query.                                                                          |
-| `useDynamicScoring` | Boolean | OPTIONAL | Default: `true`. Enables AI re-ranking.                                                             |
-| `strategy`          | String  | OPTIONAL | Options: `simpleVectorSearch`, `directLookupStrategy`, `centroidAwareness`, `entityAnchorStrategy`. |
-| `options.limit`     | Number  | OPTIONAL | Default: `5`. Max memories to return.                                                               |
+| Field               | Type    | Status   | Description                                                                                                                                                                       |
+| ------------------- | ------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `query`             | String  | REQUIRED | The natural language query.                                                                                                                                                       |
+| `useDynamicScoring` | Boolean | OPTIONAL | Default: true. Enables the Fusion Layer's re-ranking logic based on recency and authority.                                                                                        |
+| `strategy`          | String  | OPTIONAL | **Leave empty for Automatic Intent Detection.** <br />Use only to force a path: directLookupStrategy<br />, centroidAwareness, entityAnchorStrategy, <br />temporalRangeStrategy. |
+| `options.limit`     | Number  | OPTIONAL | Default: `5`. Max memories to return.                                                                                                                                             |
 
 <CodeGroup>
 
@@ -114,7 +121,9 @@ results = client.search("What is the new deadline?", limit=3, strategy="centroid
   Include `x-end-user-id` only if the cluster is configured for multi‑user ingestion. If not, use a simple identifier like `user_123`.
 </Tip>
 
-**Response**
+### Response Object
+
+The response includes the finalScore (0.0 to 1.0) and searchedWithNode metadata, providing explainability on which graph node anchored the search.
 
 ```json
 {
