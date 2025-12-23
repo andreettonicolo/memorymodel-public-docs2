@@ -4,43 +4,119 @@ description: "Self-optimizing updates and meta-insight generation"
 ---
 
 <Frame>
-  <img src="/images/diagrams/Self-optimizing_intelligence.webp" alt="Self-Optimizing Intelligence architecture" style={{ borderRadius: '0.5rem', width: '100%', backgroundColor: '#ffffff', padding: '0.5rem' }} />
+  <img
+    src="/images/diagrams/Self-optimizing_intelligence.webp"
+    alt="Self-Optimizing Intelligence architecture"
+    style={{ borderRadius:"0.5rem",width:"100%",backgroundColor:"#ffffff",padding:"0.5rem" }}
+  />
 </Frame>
 
 Press enter or click to view image in full size
 
-### Self-Optimizing Intelligence
+# Asynchronous Optimization & Background Processing
 
-#### Innovation 1: The Architect (Auto‑Tuning System)
+Memory Model employs a set of managed, asynchronous worker processes to maintain system intelligence. Unlike static vector databases, these workers continuously refine the vector space, optimize retrieval hyperparameters, and synthesize new metadata without blocking the synchronous API.
 
-- Problem: Static thresholds degrade as user behavior evolves; manual tuning requires ML expertise.
-- Our approach:
-  - Telemetry‑driven: Logs every retrieval decision and outcome
-  - LLM strategy analysis: Detects patterns in what works and what doesn’t
-  - Controlled application: Dampening functions from control theory prevent oscillation
-  - Bounded optimization: Hard constraints prevent invalid parameter suggestions
-- Technical characteristics:
-  - Convergence time: 7–10 days to optimal configuration
-  - Stability: Provably stable (Lyapunov analysis)
-  - Zero manual intervention required
-- Business value:
-  - Eliminates need for a dedicated ML engineer to tune the system
-  - Continuous improvement as usage patterns evolve
-  - 15–20% accuracy improvements observed over 2 weeks
+## 1. Vector Space Centroid Recalibration
 
-#### Innovation 2: The Dreamer (Meta‑Cognitive Insights)
+**Objective:** To maintain an accurate geometric model of memory distribution for the Adaptive Retrieval routing logic.
 
-- Problem: AI systems accumulate facts (e.g., “User bought milk”) but fail to synthesize higher‑order patterns (“User transitioning to ketogenic diet”).
-- Our approach:
-  - Temporal aggregation: Analyzes recent memories for cross‑domain patterns
-  - LLM pattern detection: Identifies behavioral shifts, emerging interests, value changes
-  - Confidence filtering: Stores only high‑confidence insights (threshold: 0.70+)
-  - First‑class storage: Insights become searchable memories themselves
-- Pattern recognition:
-  - Cross‑domain synthesis (Shopping + Health → Lifestyle change)
-  - Temporal trends (increasing/decreasing interest)
-  - Entity‑based linking (common themes across activities)
-- Business applications:
-  - Customer support: Early churn risk detection
-  - E‑commerce: Upsell opportunity identification
-  - Health: Lifestyle change tracking
+The retrieval engine uses a centroid-based distance metric to automatically switch between META (exploratory) and SPECIFIC (precise) search modes.
+
+- **Trigger Logic:** The recalibration process is triggered asynchronously based on ingestion volume thresholds.
+- **Recalibration Algorithm:**
+  1. The worker samples the vector distribution for each defined memory type.
+  2. It computes the updated **geometric centroid** of the cluster in the high-dimensional space.
+  3. It updates the routing table used by the Retrieval API.
+- **Runtime Decision Function:**\
+  During query time, the system calculates the distance 
+
+  ```
+  d(q,c)
+  ```
+
+   between the query embedding 
+
+  ```
+  q
+  ```
+
+   and the nearest memory centroid 
+
+  ```
+  c
+  ```
+
+  :
+  - **Low Distance (**
+
+    ```
+    d<δ
+    ```
+
+    **):** Indicates high intent specificity. Triggers **Specific Mode** (Low 
+
+    ```
+    k
+    ```
+
+    , strict similarity thresholds).
+  - **High Distance (**
+
+    ```
+    d>δ
+    ```
+
+    **):** Indicates exploratory intent. Triggers **Meta Mode** (High 
+
+    ```
+    k
+    ```
+
+    , broader semantic expansion).
+
+## 2. Adaptive Hyperparameter Tuning (Closed-Loop Control)
+
+**Objective:** To optimize retrieval parameters (
+
+```
+k
+```
+
+, similarity thresholds) using control theory feedback loops, eliminating manual configuration.
+
+The system treats retrieval quality as a dynamic control problem. It utilizes a **Lyapunov-stable controller** to adjust parameters based on operational telemetry.
+
+- **Feedback Mechanism:** The system monitors the **Retrieval-to-Utilization Ratio** (assessing which retrieved chunks were actually used by the LLM to generate the final response).
+- **Control Logic:**
+  - **Telemetry Aggregation:** Performance metrics are aggregated over a sliding window (default: 24h).
+  - **Dampening Function:** If utilization metrics drift, the controller adjusts the similarity_threshold and expansion_factor using a dampening function to prevent system oscillation.
+  - **Hard Constraints:** The optimization is mathematically bounded. Regardless of the error signal, parameters are locked within safe operating ranges (e.g., 0.45 \<= similarity_threshold \<= 0.95) to guarantee service reliability.
+- **Convergence:**\
+  New projects typically reach an optimal, stable parameter configuration within **7-10 days** of production traffic.
+
+## 3. Semantic Pattern Recognition (Insight Generation)
+
+**Objective:** To synthesize new, searchable insight objects from cross-domain correlations in the raw memory stream.
+
+This worker functions as a background generative analysis layer. It scans the immutable log of user memories to identify latent behavioral patterns.
+
+- **Process Flow:**
+  1. **Temporal Aggregation:** The worker fetches memory objects within a specific moving window.
+  2. **Generative Analysis:** An LLM-based classifier analyzes the aggregate text to detect semantic correlations across different domains (e.g., correlating _Health Logs_ with _Shopping Patterns_).
+  3. **Confidence Gate:** A probabilistic filter evaluates the strength of the detected pattern. Insights with a confidence score 
+
+     ```
+     <0.70
+     ```
+
+      are discarded.
+- **Persistence:**\
+  Validated patterns are stored as "First-Class" memory objects with type: "insight". These are vectorized and indexed immediately, making the _pattern itself_ retrievable in future queries.
+
+### Temporal Normalization Strategy
+
+To prevent temporal hallucinations in synthesized insights, the system applies **Shift-Left Temporal Resolution**:
+
+- **Absolute Timestamping:** All relative time references detected during analysis (e.g., "last week", "recently") are resolved to absolute **ISO 8601** intervals _before_ storage.
+- **Deterministic Indexing:** An insight regarding events from "last week" generated today is indexed with the specific date range (e.g., 2024-11-01/2024-11-07), ensuring temporal accuracy regardless of when the memory is retrieved in the future.

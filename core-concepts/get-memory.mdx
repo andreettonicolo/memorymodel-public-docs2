@@ -1,11 +1,12 @@
 ---
 title: "Get Memories"
-description: "List all memories in a cluster with optional filters"
+description: "Retrieve raw  memory records  directly from the cluster with optional filters"
 ---
 
 ### Overview
 
-Get a paginated list of memories stored in a cluster. Use optional filters such as memory type and limits to control results.
+Unlike the Search API which performs adaptive vector similarity lookups, this endpoint executes a **deterministic fetch** of memory records.\
+It is primarily used for auditing, content management, and retrieving system-generated insights.
 
 ### Endpoint
 
@@ -13,18 +14,20 @@ Get a paginated list of memories stored in a cluster. Use optional filters such 
 
 ### Query parameters
 
-| Param | Type | Status | Description |
-| --- | --- | --- | --- |
-| `limit` | Number | OPTIONAL | Default: `50`. |
-| `memoryType` | String | OPTIONAL | Filter by specific memory type. |
+| Param        | Type   | Status   | Description                                                                                      |
+| ------------ | ------ | -------- | ------------------------------------------------------------------------------------------------ |
+| `limit`      | Number | OPTIONAL | Default: `50`.                                                                                   |
+| `memoryType` | String | OPTIONAL | ilter by the specific **Memory Node**. Matches the memory_type field returned in search results. |
 
 ### cURL example
 
 <CodeGroup>
+
 ```bash cURL
 curl -X GET "https://api.memorymodel.dev/v1/memory?limit=10" \
   -H "x-memory-cluster-access-key: sk_live_..."
 ```
+
 
 ```typescript TypeScript
 // npm install @memorymodel/client
@@ -40,6 +43,7 @@ const memories = await client.list({
 });
 ```
 
+
 ```python Python
 # pip install memory-model
 from memorymodel import MemoryClient
@@ -51,9 +55,9 @@ client = MemoryClient(
 
 memories = client.list(limit=10)
 ```
+
 </CodeGroup>
 
 <Note>
   Authentication is required. Requests without valid credentials will fail. Ensure your cluster access key has permission to list memories.
 </Note>
-

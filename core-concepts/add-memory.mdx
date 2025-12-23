@@ -5,7 +5,8 @@ description: "Ingest unstructured data into the Memory Cluster."
 
 ## Operational Pipeline
 
-#### The ingestion API operates on an **asynchronous, event-driven model**.\
+#### The ingestion API operates on an **asynchronous, event-driven model**.\\
+
 Requests are validated and acknowledged immediately (202 Accepted), then offloaded to a background worker queue. The data undergoes a specific transformation sequence before becoming searchable:
 
 1. **Shift-Left Temporal Resolution:** The pipeline scans source.content for relative time references (e.g., "next Friday", "in three days"). These are resolved into absolute ISO 8601 timestamps _at the moment of ingestion_, creating a deterministic temporal index.
