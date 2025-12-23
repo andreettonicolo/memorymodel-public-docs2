@@ -1,0 +1,191 @@
+---
+title: "Agent Integration Examples"
+description: "Micro patterns for memory acquisition and context-aware responses"
+---
+
+## Agent Integration Examples
+
+### Example 1: Add Memory from Chat Messages (Memory Acquisition)
+
+Store every user message as a memory for future context retrieval:
+
+<CodeGroup>
+```typescript TypeScript
+// npm install @memorymodel/client
+import { MemoryClient } from '@memorymodel/client';
+import { generateText } from 'ai'; // Vercel AI SDK example
+
+const memory = new MemoryClient({
+  apiKey: process.env.MEMORY_API_KEY!,
+  defaultEndUserId: "user_123"
+});
+
+async function handleUserMessage(message: string) {
+  // 1. Store the message as memory
+  await memory.add(message, {
+    userContext: "User chat message"
+  });
+
+  // 2. Generate AI response (your LLM logic)
+  const response = await generateText({
+    model: openai('gpt-4o'),
+    prompt: message
+  });
+
+  return response.text;
+}
+```
+
+```python Python
+# pip install memory-model
+import os
+from memorymodel import MemoryClient
+
+memory = MemoryClient(
+    api_key=os.environ["MEMORY_API_KEY"],
+    default_end_user_id="user_123"
+)
+
+def handle_user_message(message: str) -> str:
+    memory.add(message, user_context="User chat message")
+
+    response_text = your_llm.generate(prompt=message)
+    return response_text
+```
+</CodeGroup>
+
+### Example 2: Context-Aware Agent (Search Memory)
+
+Search relevant memories before generating a response:
+
+<CodeGroup>
+```typescript TypeScript
+// npm install @memorymodel/client
+import { MemoryClient } from '@memorymodel/client';
+import { generateText } from 'ai'; // Vercel AI SDK example
+
+const memory = new MemoryClient({
+  apiKey: process.env.MEMORY_API_KEY!,
+  defaultEndUserId: "user_123"
+});
+
+async function handleUserQuery(query: string) {
+  // 1. Search for relevant memories
+  const memories = await memory.search(query, {
+    limit: 5
+  });
+
+  // 2. Build context from memories
+  const context = memories
+    .map(m => `- ${m.content}`)
+    .join('\n');
+
+  // 3. Generate response with context
+  const response = await generateText({
+    model: openai('gpt-4o'),
+    system: `You are a helpful assistant. Use this context:\n${context}`,
+    prompt: query
+  });
+
+  return response.text;
+}
+```
+
+```python Python
+# pip install memory-model
+import os
+from memorymodel import MemoryClient
+
+memory = MemoryClient(
+    api_key=os.environ["MEMORY_API_KEY"],
+    default_end_user_id="user_123"
+)
+
+def handle_user_query(query: str) -> str:
+    memories = memory.search(query, limit=5)
+
+    context = "\n".join([f"- {m.payload['content']}" for m in memories])
+
+    response_text = your_llm.generate(
+        system=f"You are a helpful assistant. Use this context:\n{context}",
+        prompt=query
+    )
+
+    return response_text
+```
+</CodeGroup>
+
+### Example 3: Full Agent Loop (Add Memory + Search Memory)
+
+Complete pattern for a memory-powered chatbot:
+
+<CodeGroup>
+```typescript TypeScript
+// npm install @memorymodel/client
+import { MemoryClient } from '@memorymodel/client';
+
+const memory = new MemoryClient({
+  apiKey: process.env.MEMORY_API_KEY!,
+  defaultEndUserId: "user_123"
+});
+
+async function agentLoop(userMessage: string) {
+  // A. Add Memory (the new message)
+  await memory.add(userMessage);
+
+  // B. Search Memory (relevant past context)
+  const context = await memory.search(userMessage, {
+    limit: 3
+  });
+
+  // C. Generate response with memory context
+  const systemPrompt = context.length > 0
+    ? `Context from past conversations:\n${context.map(m => m.content).join('\n')}`
+    : "No prior context available.";
+
+  const aiResponse = await yourLLM.generate({
+    system: systemPrompt,
+    user: userMessage
+  });
+
+  // D. Optionally Add Memory (the AI response) too
+  await memory.add(aiResponse, {
+    userContext: "AI response"
+  });
+
+  return aiResponse;
+}
+```
+
+```python Python
+# pip install memory-model
+import os
+from memorymodel import MemoryClient
+
+memory = MemoryClient(
+    api_key=os.environ["MEMORY_API_KEY"],
+    default_end_user_id="user_123"
+)
+
+def agent_loop(user_message: str) -> str:
+    # A. Add Memory (the new message)
+    memory.add(user_message)
+
+    # B. Search Memory (relevant past context)
+    context = memory.search(user_message, limit=3)
+
+    system_prompt = (
+        "Context from past conversations:\n"
+        + "\n".join([m.payload["content"] for m in context])
+        if len(context) > 0
+        else "No prior context available."
+    )
+
+    ai_response = your_llm.generate(system=system_prompt, user=user_message)
+
+    # D. Optionally Add Memory (the AI response) too
+    memory.add(ai_response, user_context="AI response")
+
+    return ai_response
+```
+</CodeGroup>
