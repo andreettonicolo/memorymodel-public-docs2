@@ -1,7 +1,6 @@
 ---
 title: "L2 - FinCare AI — Customer Support & Sales Intelligence Example"
-description: "FinCare AI is a reference open-source example showing how MemoryModel can be used to power multiple autonomous agents over a shared memory layer.
-The project demonstrates how long-term, structured memory can transform customer support conversations into actionable sales insights — without interfering with the user experience."
+description: "FinCare AI is a reference open-source example showing how MemoryModel can be used to power multiple autonomous agents over a shared memory layer. The project demonstrates how long-term, structured memory can transform customer support conversations into actionable sales insights — without interfering with the user experience."
 ---
 
 ## What this example shows
@@ -11,7 +10,7 @@ This example focuses on **memory orchestration**, not just retrieval.
 Specifically, it demonstrates how to:
 
 - Share the same memory cluster across multiple agents
-- Combine RAG-based customer support with autonomous insight extraction
+- Combine MemoryModel based customer support with autonomous insight extraction
 - Persist structured commercial signals during conversations
 - Separate _who talks_ from _who observes_
 
@@ -27,7 +26,7 @@ The system is composed of three main components, all connected to the same Memor
 - Retrieves information from product documentation and user profiles
 - Stores long-term user preferences and contextual data
 
-![Whats App Image 2026 01 07 At 09 49 19](/images/WhatsAppImage2026-01-07at09.49.19.jpeg)
+![Whats App Image 2026 01 07 At 09 49 31](/images/WhatsAppImage2026-01-07at09.49.31.jpeg)
 
 ### 2. Spy Node (SalesInsight)
 
@@ -45,7 +44,7 @@ The system is composed of three main components, all connected to the same Memor
 - Displays real-time sales insights to a human operator
 - Scores leads based on estimated conversion probability
 
-![Whats App Image 2026 01 07 At 09 49 31](/images/WhatsAppImage2026-01-07at09.49.31.jpeg)
+![Download](/images/download.jpg)
 
 ---
 
@@ -64,28 +63,6 @@ All nodes are defined in `nodes.txt` and created explicitly when configuring the
 
 This highlights a core concept of MemoryModel:\
 **you decide what is memory-worthy, not the system.**
-
----
-
-## Why this example matters
-
-Traditional RAG systems:
-
-- retrieve text
-- do not track intent, evolution, or opportunity
-- cannot distinguish between “helping” and “learning”
-
-In this example:
-
-- the customer agent focuses exclusively on support
-- the Spy Node focuses exclusively on extraction and persistence
-- memory becomes a shared, long-term asset across agents
-
-This separation enables systems that are:
-
-- observable
-- extensible
-- production-oriented
 
 ---
 
