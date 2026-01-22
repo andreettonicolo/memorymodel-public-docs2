@@ -18,53 +18,53 @@ Structured, customizable, and managed memory for agency economics.</p>
     Want to discover (almost) all our secrets? Read here.
   </Card>
   <Card title="Benchmarks" icon="chart-bar" color="#b26eff" href="https://docs.memorymodel.dev/benchmarks">
-    Validated on the **LoCoMo** dataset
+    Validated on the <strong>LoCoMo</strong> dataset
   </Card>
   <Card title="Quickstart" icon="rocket-launch" color="#b26eff" href="https://docs.memorymodel.dev/quickstart">
     Start with MemoryModel in guided steps.
   </Card>
-  <Card title="Examples" icon="lightbulb-cfl-on" color="https://docs.memorymodel.dev/examples/agent-integration-examples">
+  <Card title="Examples" icon="lightbulb-cfl-on" color="#b26eff" href="https://docs.memorymodel.dev/examples/agent-integration-examples">
     If you want examples of usage.
   </Card>
 </CardGroup>
 
-Memory Model is a fully managed Adaptive Intelligence Platform designed to solve context retention for LLM applications.\
-Unlike static vector databases that rely solely on similarity search, Memory Model operates as an active orchestration middleware. It combines a Schema-Agnostic Storage Engine with an Adaptive Retrieval System that autonomously manages data ingestion strategies, query routing, and parameter self-optimization.
+Memory Model is a fully managed Adaptive Intelligence Platform designed to solve context retention for LLM applications.  
+Unlike static vector databases that rely solely on similarity search, Memory Model operates as an active orchestration middleware. It combines a Schema-Agnostic Storage Engine with an Adaptive Retrieval System that autonomously manages data ingestion strategies, query routing, and parameter self-optimization.
 
 ## Data Strategy & Ingestion
 
 ### User-Defined Schemas
 
-The platform utilizes a **Schema-Agnostic approach**. Instead of storing generic text chunks, it operates on **Specialized Memory Nodes**. Users define custom structures via the Management Console to capture specific attributes alongside unstructured data.
+The platform utilizes a **Schema-Agnostic approach**. Instead of storing generic text chunks, it operates on **Specialized Memory Nodes**. Users define custom structures via the Management Console to capture specific attributes alongside unstructured data.
 
 ### Event-Driven Ingestion Pipeline
 
-The architecture employs an **asynchronous processing model**. Upon ingestion, memory nodes enter a processing queue to undergo a deterministic two-stage transformation before final storage:
+The architecture employs an **asynchronous processing model**. Upon ingestion, memory nodes enter a processing queue to undergo a deterministic two-stage transformation before final storage:
 
-1. **Multi-Stage Semantic Enrichment:**\
-   The system applies **bidirectional semantic expansion**. It injects implicit context (themes, related concepts) into the node to maximize vector overlap, eliminating terminology mismatches during retrieval.
-2. **Shift-Left Temporal Resolution:**\
+1. **Multi-Stage Semantic Enrichment:**  
+   The system applies **bidirectional semantic expansion**. It injects implicit context (themes, related concepts) into the node to maximize vector overlap, eliminating terminology mismatches during retrieval.
+2. **Shift-Left Temporal Resolution:**  
    Relative time references (e.g., "next Friday") are resolved into absolute ISO 8601 timestamps. This creates deterministic indices, converting complex temporal reasoning into precise date-range lookups.
 
 ### Virtual Knowledge Graph
 
-Beyond storing isolated vectors, the architecture maintains a **logical graph structure**.\
-By analyzing shared entities and temporal proximity, the system links disparate memory nodes into a cohesive network. This topology allows the system to traverse relationships (e.g., connecting "Health" nodes to "Shopping" nodes) and generate **Synthesized Insights**—higher-order nodes representing behavioral patterns that would be invisible to standard similarity search.
+Beyond storing isolated vectors, the architecture maintains a **logical graph structure**.  
+By analyzing shared entities and temporal proximity, the system links disparate memory nodes into a cohesive network. This topology allows the system to traverse relationships (e.g., connecting "Health" nodes to "Shopping" nodes) and generate **Synthesized Insights**—higher-order nodes representing behavioral patterns that would be invisible to standard similarity search.
 
 ## Retrieval Logic
 
-The core differentiator is the **Adaptive Retrieval System**. The platform abandons "one-size-fits-all" searching in favor of **Intent-Based Routing**, classifying every query into one of four execution strategies:
+The core differentiator is the **Adaptive Retrieval System**. The platform abandons "one-size-fits-all" searching in favor of **Intent-Based Routing**, classifying every query into one of four execution strategies:
 
-1. **Direct Match Strategy:** Executes precise key-value lookups for specific identifiers (IDs, filenames), bypassing vector search for O(1) performance.
-2. **Entity Anchor Strategy:** Activated when the intent focuses on specific Named Entities, utilizing the **Knowledge Graph** to fetch content tied to a subject regardless of semantic phrasing.
-3. **Temporal Range Strategy:** Converts time-bound queries into deterministic date-range filters (leveraging the pre-resolved ISO 8601 timestamps).
-4. **Adaptive Vector Search (Semantic):** Handles abstract or conceptual queries. Uniquely, this strategy utilizes **Centroid Analysis** (measuring distance from the user's semantic center of mass) to dynamically select an operating mode:
-   - **META Mode:** Broad, exploratory search (High-k).
-   - **SPECIFIC Mode:** Narrow, precision-focused search (Low-k).
+1. **Direct Match Strategy:** Executes precise key-value lookups for specific identifiers (IDs, filenames), bypassing vector search for O(1) performance.
+2. **Entity Anchor Strategy:** Activated when the intent focuses on specific Named Entities, utilizing the **Knowledge Graph** to fetch content tied to a subject regardless of semantic phrasing.
+3. **Temporal Range Strategy:** Converts time-bound queries into deterministic date-range filters (leveraging the pre-resolved ISO 8601 timestamps).
+4. **Adaptive Vector Search (Semantic):** Handles abstract or conceptual queries. Uniquely, this strategy utilizes **Centroid Analysis** (measuring distance from the user's semantic center of mass) to dynamically select an operating mode:
+   - **META Mode:** Broad, exploratory search (High-k).
+   - **SPECIFIC Mode:** Narrow, precision-focused search (Low-k).
 
-**_Outputs from these strategies are aggregated via a Fusion Layer responsible for deduplication and final ranking._**
+**_Outputs from these strategies are aggregated via a Fusion Layer responsible for deduplication and final ranking._**
 
 ## Continuous Optimization
 
-The platform replaces manual configuration with **Closed-Loop Optimization**.\
-Background processes, governed by **Control Theory principles**, continuously analyze retrieval telemetry (Precision/Recall). The system automatically adjusts similarity thresholds and ranking weights to adapt to evolving user patterns without human intervention.
+The platform replaces manual configuration with **Closed-Loop Optimization**.  
+Background processes, governed by **Control Theory principles**, continuously analyze retrieval telemetry (Precision/Recall). The system automatically adjusts similarity thresholds and ranking weights to adapt to evolving user patterns without human intervention.
