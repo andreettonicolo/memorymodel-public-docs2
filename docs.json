@@ -14,7 +14,8 @@
         "group": "Getting started",
         "pages": [
           "introduction",
-          "quickstart"
+          "quickstart",
+          "getting-started/vibe-memory-agent"
         ]
       },
       {
