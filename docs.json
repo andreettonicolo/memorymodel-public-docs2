@@ -32,6 +32,7 @@
           "core-concepts/add-memory",
           "core-concepts/search-memory",
           "core-concepts-and-api/explore-memory",
+          "core-concepts-and-api/memory-graph",
           "core-concepts/get-memory",
           "core-concepts/export-data",
           "core-concepts/update-memory"
